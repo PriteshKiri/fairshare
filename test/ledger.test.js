@@ -22,6 +22,15 @@ describe("settle", () => {
     assert.equal(sum(result.balances), 0);
   });
 
+  it("treats a bill paid only for yourself as already settled", () => {
+    const result = settle([
+      { payer: "Ava", amount: 15, participants: ["Ava"] },
+    ]);
+
+    assert.deepEqual(result.balances, { Ava: 0 });
+    assert.deepEqual(result.transfers, []);
+  });
+
   it("lets someone pay for a group they are not part of", () => {
     const result = settle([
       { payer: "Ava", amount: 40, participants: ["Ben", "Cho"] },
